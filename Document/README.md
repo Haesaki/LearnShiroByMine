@@ -92,6 +92,12 @@ System.exit(0);
 2. SecurityManager 管理所有用户
 3. Relam: 链接数据
 
+**内置过滤器**
+anon: 无需认证 访问
+authc: 必须认证才能访问
+user: 必须拥有记住我功能才能用
+perms: 拥有某个资源权限才能访问
+role: 拥有某个角色权限才能访问
 
 ## 开发中遇到的错误
 ```shell

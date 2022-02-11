@@ -9,5 +9,4 @@ public class ShiroTutorialApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShiroTutorialApplication.class, args);
     }
-
 }
