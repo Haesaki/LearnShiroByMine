@@ -54,4 +54,5 @@ public class ShiroConfig {
     public UserRealm userRealm() {
         return new UserRealm();
     }
+
 }
