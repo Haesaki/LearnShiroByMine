@@ -11,33 +11,47 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
-    // 3. ShiroFilterFactoryBean
-    @Bean(name = "shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("getDefaultWebSecurityManager") DefaultWebSecurityManager defaultWebSecurityManager){
-        ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-        // 设置安全管理器
-        bean.setSecurityManager(defaultWebSecurityManager);
-        // 添加shiro的内置过滤器
-        Map<String, String> filterChainDefintionMap = new HashMap<>();
-        filterChainDefintionMap.put("/user/*", "authc");
 
-        bean.setFilterChainDefinitionMap(filterChainDefintionMap);
-        // 设置登录链接
+    @Bean
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager) {
+        ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
+        //这个安全管理器
+        bean.setSecurityManager(defaultWebSecurityManager);
+
+        //添加shiro的内置过滤器
+        /**
+         * anon：无需认证就可以访问
+         * authc：必须认证了才能访问
+         * user：必须拥有 记住我 功能才能用
+         * perms：拥有这个资源权限才能访问
+         * role：拥有某个角色权限才能访问
+         */
+        Map<String, String> fliterMap = new HashMap<>();
+
+        fliterMap.put("/user/add", "perms[user:add]");
+
+        fliterMap.put("/user/*", "authc");
+        bean.setFilterChainDefinitionMap(fliterMap);
+
+        //登录页，需要自己写页面和Controller
         bean.setLoginUrl("/user/login");
+
+        //未授权页面
+//        bean.setUnauthorizedUrl("/noauth");
 
         return bean;
     }
-    // 2. DefaultWebSecurityManager
-    @Bean(name = "getDefaultWebSecurityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm){
+
+    @Bean(name = "securityManager")
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        // 关联Realm
+        //关联userRealm
         securityManager.setRealm(userRealm);
         return securityManager;
     }
-    // 1. 创建realm对象，自己定义
-    @Bean(name = "userRealm")
-    public UserRealm getUserRealm(){
+
+    @Bean
+    public UserRealm userRealm() {
         return new UserRealm();
     }
 }
