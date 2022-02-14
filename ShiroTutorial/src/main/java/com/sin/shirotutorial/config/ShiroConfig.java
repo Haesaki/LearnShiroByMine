@@ -13,7 +13,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("defaultWebSecurityManager") DefaultWebSecurityManager defaultWebSecurityManager) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         //这个安全管理器
         bean.setSecurityManager(defaultWebSecurityManager);
@@ -34,7 +34,7 @@ public class ShiroConfig {
         bean.setFilterChainDefinitionMap(fliterMap);
 
         //登录页，需要自己写页面和Controller
-        bean.setLoginUrl("/user/login");
+        bean.setLoginUrl("/user/login   ");
 
         //未授权页面
 //        bean.setUnauthorizedUrl("/noauth");
@@ -42,8 +42,8 @@ public class ShiroConfig {
         return bean;
     }
 
-    @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
+    @Bean(name = "defaultWebSecurityManager")
+    public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //关联userRealm
         securityManager.setRealm(userRealm);

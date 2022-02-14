@@ -32,7 +32,7 @@ public class IndexController {
         return "/user/login";
     }
 
-    @RequestMapping("/user/loginRequest")
+    @RequestMapping("/loginRequest")
     public String login(Model model, String username, String password){
         // 获取当前的用户
         Subject user = SecurityUtils.getSubject();
@@ -45,6 +45,12 @@ public class IndexController {
             model.addAttribute("msg", "Unknown Account Or Incorrect Password");
             return "/user/login";
         }
+        return "/index";
+    }
+
+    @RequestMapping("/noauth")
+    public String unauthorized(Model model){
+        model.addAttribute("msg", "Unauthorized");
         return "/index";
     }
 }
